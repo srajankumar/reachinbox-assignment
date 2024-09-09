@@ -51,7 +51,10 @@ const Header = () => {
         <DropdownMenu>
           <DropdownMenuTrigger className="flex justify-center items-center gap-2">
             <div className="md:flex hidden">{fullName}&apos;s Workspace</div>
-            <div className="md:hidden flex">{firstName}&apos;s Workspace</div>
+            <div className="md:hidden sm:flex hidden">
+              {firstName}&apos;s Workspace
+            </div>
+            <div className="sm:hidden flex">Workspace</div>
             <ChevronDown className="w-5 h-5" />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
