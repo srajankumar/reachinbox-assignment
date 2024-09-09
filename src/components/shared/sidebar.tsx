@@ -1,11 +1,45 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 
+import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
+
+interface DecodedToken {
+  user: {
+    email: string;
+    id: number;
+    firstName: string;
+    lastName: string;
+  };
+  iat: number;
+  exp: number;
+}
+
 const Sidebar = () => {
+  const [initials, setInitials] = useState<string | null>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwtToken");
+
+    if (token) {
+      try {
+        const decoded: DecodedToken = jwtDecode(token);
+        const { firstName, lastName } = decoded.user;
+
+        const firstInitial = firstName ? firstName[0].toUpperCase() : "";
+        const lastInitial = lastName ? lastName[0].toUpperCase() : "";
+
+        setInitials(`${firstInitial}${lastInitial}`);
+      } catch (error) {
+        console.error("Failed to decode JWT token", error);
+      }
+    }
+  }, []);
 
   return (
     <div className="bg-card flex border-r flex-col w-fit min-h-[100dvh]">
@@ -185,7 +219,9 @@ const Sidebar = () => {
         <div className="mx-auto py-5">
           <Avatar>
             <AvatarImage src="" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback className="bg-green-900">
+              {initials ? initials : "NA"}
+            </AvatarFallback>
           </Avatar>
         </div>
       </div>
