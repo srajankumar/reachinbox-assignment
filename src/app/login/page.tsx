@@ -2,7 +2,6 @@ import React from "react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -25,7 +24,7 @@ const Login = () => {
             href={`https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=${process.env.NEXT_PUBLIC_CLIENT_URL}`}
           >
             <Button
-              className="md:w-96 sm:w-80 w-full flex gap-2"
+              className="md:w-96 dark:bg-secondary/50 dark:hover:bg-secondary/40 sm:w-80 w-full flex gap-2"
               variant={"outline"}
             >
               <div>
