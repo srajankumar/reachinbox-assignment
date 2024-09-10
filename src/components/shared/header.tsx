@@ -47,8 +47,10 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="w-full flex fixed z-40 pl-20 bg-background justify-between items-center pr-4 py-4 border-b">
-      <p className="text-xl font-semibold capitalize">{dynamicSegment}</p>
+    <div className="w-full flex fixed z-40 pl-20 bg-card justify-between items-center pr-4 py-4 border-b">
+      <p className="text-xl font-bold tracking-wide capitalize">
+        {dynamicSegment}
+      </p>
       <div className="flex gap-3">
         <ModeToggle />
         <DropdownMenu>
