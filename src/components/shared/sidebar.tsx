@@ -46,14 +46,14 @@ const Sidebar = () => {
       <div className="bg-card fixed z-50 left-0 top-0 flex border-r flex-col w-fit min-h-[100dvh]">
         <div className="py-5 px-4">
           <Image
-            src={"/logos/logo-white.svg"}
+            src={"/logos/logo-white.png"}
             className="w-8 h-8 rounded-sm dark:flex hidden"
             alt="logo"
             width={500}
             height={500}
           />
           <Image
-            src={"/logos/logo-black.svg"}
+            src={"/logos/logo-black.png"}
             className="w-8 h-8 rounded-sm dark:hidden flex"
             alt="logo"
             width={500}
