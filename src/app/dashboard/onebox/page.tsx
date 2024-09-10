@@ -26,7 +26,29 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Baseline, Code, ImageIcon, Link2, Smile, User } from "lucide-react";
+import {
+  Baseline,
+  Code,
+  ImageIcon,
+  Link2,
+  Mail,
+  MailOpenIcon,
+  Send,
+  Smile,
+  User,
+} from "lucide-react";
+import { jwtDecode } from "jwt-decode";
+
+interface DecodedToken {
+  user: {
+    email: string;
+    id: number;
+    firstName: string;
+    lastName: string;
+  };
+  iat: number;
+  exp: number;
+}
 
 interface Email {
   id: number;
@@ -67,6 +89,23 @@ const EmailList = () => {
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
   const [showReplyDialog, setShowReplyDialog] = useState<boolean>(false); // Reply dialog state
   const [replyBody, setReplyBody] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwtToken");
+
+    if (token) {
+      try {
+        const decoded: DecodedToken = jwtDecode(token);
+        const { firstName, lastName, email } = decoded.user;
+        setName(firstName);
+        setEmail(email);
+      } catch (error) {
+        console.error("Failed to decode JWT token", error);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const fetchEmails = async () => {
@@ -229,164 +268,265 @@ const EmailList = () => {
 
   return (
     <div>
-      <div className="absolute dark:bg-background bg-card top-0 left-0 pl-20 pt-20 border-r xl:w-1/4 lg:w-1/3 md:w-1/2 w-full h-full pr-4">
-        <h2 className="text-2xl pt-4 pb-2 text-blue-500 font-semibold">
-          All Inbox(s)
-        </h2>
-        <div className="pb-5 flex items-center gap-1">
-          <p className="font-bold">
-            {selectedEmailIndex !== null
-              ? `${selectedEmailIndex + 1}/${emails.length}`
-              : `0/${emails.length}`}
-          </p>
-          <p className="text-primary/60">Inboxes selected</p>
-        </div>
-
-        <Input
-          type="text"
-          placeholder="Search"
-          value={searchQuery}
-          onChange={handleSearch}
-          className="mb-4"
-        />
-
-        {emails.length === 0 ? (
-          <div className={`hover:bg-secondary border-b cursor-pointer`}>
-            <div className="flex flex-wrap gap-3 px-3 pt-4 pb-1 justify-between items-center">
-              <Skeleton className="w-[100px] h-5 rounded-full" />
-              <Skeleton className="w-[200px] h-5 rounded-full" />
-              <Skeleton className="w-[100px] h-5 rounded-full mb-4" />
-            </div>
+      <div className="xl:grid-cols-4 lg:grid-cols-8 md:grid-cols-6 grid-cols-1 sm:grid-cols-2 absolute left-0 top-0 grid h-full">
+        <div className="xl:col-span-1 lg:col-span-3 md:col-span-2 col-span-1 dark:bg-background bg-card top-0 left-0 pl-20 pt-20 border-r w-full h-full pr-4">
+          <h2 className="text-2xl pt-4 pb-2 text-blue-500 font-semibold">
+            All Inbox(s)
+          </h2>
+          <div className="pb-5 flex items-center gap-1">
+            <p className="font-bold">
+              {selectedEmailIndex !== null
+                ? `${selectedEmailIndex + 1}/${emails.length}`
+                : `0/${emails.length}`}
+            </p>
+            <p className="text-primary/60">Inboxes selected</p>
           </div>
-        ) : (
-          <>
-            {emails.map((email, index) => (
-              <div
-                key={email.id}
-                onClick={() => handleEmailClick(index, email.threadId)}
-                className={`${
-                  selectedThreadId === email.threadId
-                    ? "border-l-2 md:border-l-blue-500 border-l-transparent"
-                    : "border-l-2 border-l-transparent"
-                } hover:bg-secondary border-b cursor-pointer`}
-              >
-                <div className="flex flex-wrap px-3 pt-4 pb-1 justify-between items-center">
-                  <h1 className="font-medium">{email.fromEmail}</h1>
-                  <div className="text-primary/50 text-sm font-medium dark:font-normal">
-                    {new Date(email.sentAt).toLocaleDateString("en-US", {
-                      day: "numeric",
-                      month: "short",
-                    })}
-                  </div>
-                </div>
-                <p className="truncate font-medium dark:font-normal px-3 text-sm text-primary/60">
-                  {email.subject}
-                </p>
-                <div className="pb-5 px-3 pt-2">
-                  <Badge variant="secondary">
-                    <div className="w-3.5 h-3.5 bg-[#57E0A6]/20 mr-1 rounded-full flex justify-center items-center">
-                      <div className="w-1.5 h-1.5 bg-[#57E0A6] rounded-full"></div>
-                    </div>
-                    Interested
-                  </Badge>
-                </div>
-              </div>
-            ))}
-          </>
-        )}
-      </div>
 
-      <div className="absolute dark:bg-background bg-secondary h-full pt-24 px-5 top-0 right-0 xl:w-3/4 lg:w-2/3 md:w-1/2 md:grid hidden">
-        {selectedThreadId ? (
-          loadingMessages ? (
-            <div className="p-4 border flex flex-col gap-3 rounded-md bg-card h-fit">
-              <Skeleton className="w-[100px] h-5 rounded-full mb-2" />
-              <Skeleton className="w-[120px] h-5 rounded-full" />
-              <Skeleton className="w-[140px] h-5 rounded-full" />
-              <div className="mt-3 flex flex-col gap-2">
+          <Input
+            type="text"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={handleSearch}
+            className="mb-4"
+          />
+
+          {emails.length === 0 ? (
+            <div className={`hover:bg-secondary border-b cursor-pointer`}>
+              <div className="flex flex-wrap gap-3 px-3 pt-4 pb-1 justify-between items-center">
                 <Skeleton className="w-[100px] h-5 rounded-full" />
-                <Skeleton className="w-[150px] h-5 rounded-full" />
+                <Skeleton className="w-[200px] h-5 rounded-full" />
+                <Skeleton className="w-[100px] h-5 rounded-full mb-4" />
               </div>
             </div>
           ) : (
-            <ScrollArea className="h-full">
-              <div className="space-y-5 pb-20">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className="p-4 mb-5 border flex flex-col gap-2 rounded-md bg-card"
-                  >
-                    <div className="flex justify-between gap-5 flex-wrap">
-                      <h1 className="font-semibold text-lg">
-                        {message.subject}
-                      </h1>
-                      <p className="text-sm tracking-wide text-primary/60 font-medium dark:font-normal">
-                        {new Date(message.sentAt).toLocaleDateString("en-US", {
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric",
-                        })}{" "}
-                        :{" "}
-                        {new Date(message.sentAt).toLocaleTimeString("en-US", {
-                          hour: "numeric",
-                          minute: "numeric",
-                          hour12: true,
-                        })}
-                      </p>
+            <>
+              {emails.map((email, index) => (
+                <div
+                  key={email.id}
+                  onClick={() => handleEmailClick(index, email.threadId)}
+                  className={`${
+                    selectedThreadId === email.threadId
+                      ? "border-l-2 sm:border-l-blue-500 border-l-transparent"
+                      : "border-l-2 border-l-transparent"
+                  } hover:bg-secondary border-b cursor-pointer`}
+                >
+                  <div className="flex flex-wrap px-3 pt-4 pb-1 justify-between items-center">
+                    <h1 className="font-medium">{email.fromEmail}</h1>
+                    <div className="text-primary/50 text-sm font-medium dark:font-normal">
+                      {new Date(email.sentAt).toLocaleDateString("en-US", {
+                        day: "numeric",
+                        month: "short",
+                      })}
                     </div>
-                    <p className="text-primary/60 font-medium dark:font-normal">
-                      From: {message.fromEmail}
-                    </p>
-                    <p className="text-primary/60 font-medium dark:font-normal">
-                      To: {message.toEmail}
-                    </p>
-                    <div
-                      className="mt-3 text-sm leading-6 tracking-wide text-primary/85 font-medium dark:font-normal"
-                      dangerouslySetInnerHTML={{ __html: message.body }}
-                    />
                   </div>
-                ))}
+                  <p className="truncate font-medium dark:font-normal px-3 text-sm text-primary/60">
+                    {email.subject}
+                  </p>
+                  <div className="pb-5 px-3 pt-2">
+                    <Badge variant="secondary">
+                      <div className="w-3.5 h-3.5 bg-[#57E0A6]/20 mr-1 rounded-full flex justify-center items-center">
+                        <div className="w-1.5 h-1.5 bg-[#57E0A6] rounded-full"></div>
+                      </div>
+                      Interested
+                    </Badge>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+
+        <div className="xl:col-span-2 lg:col-span-3 md:col-span-2 relative dark:bg-background bg-secondary h-full pt-24 px-5 top-0 right-0 sm:grid hidden">
+          {selectedThreadId ? (
+            loadingMessages ? (
+              <div className="p-4 border flex flex-col gap-3 rounded-md bg-card h-fit">
+                <Skeleton className="w-[100px] h-5 rounded-full mb-2" />
+                <Skeleton className="w-[120px] h-5 rounded-full" />
+                <Skeleton className="w-[140px] h-5 rounded-full" />
+                <div className="mt-3 flex flex-col gap-2">
+                  <Skeleton className="w-[100px] h-5 rounded-full" />
+                  <Skeleton className="w-[150px] h-5 rounded-full" />
+                </div>
               </div>
-            </ScrollArea>
-          )
-        ) : (
-          <div className="flex justify-center items-center min-h-[85dvh] w-full">
-            <div className="flex justify-center items-center flex-col w-full gap-9">
-              <Image
-                src={"/images/mail.svg"}
-                className="w-60 md:w-80 h-48 md:h-60 rounded-sm"
-                alt="logo"
-                width={500}
-                height={500}
-              />
-              <h1 className="md:text-2xl text-xl text-center font-semibold">
-                It&apos;s the beginning of a legendary sales pipeline
-              </h1>
-              <div className="md:text-lg text-base text-center text-primary/50">
-                <p>Select an email to view</p>
+            ) : (
+              <ScrollArea className="h-full">
+                <div className="space-y-5 pb-20">
+                  {messages.map((message) => (
+                    <div
+                      key={message.id}
+                      className="p-4 mb-5 border flex flex-col gap-2 rounded-md bg-card"
+                    >
+                      <div className="flex justify-between gap-5 flex-wrap">
+                        <h1 className="font-semibold text-lg">
+                          {message.subject}
+                        </h1>
+                        <p className="text-sm tracking-wide text-primary/60 font-medium dark:font-normal">
+                          {new Date(message.sentAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            }
+                          )}{" "}
+                          :{" "}
+                          {new Date(message.sentAt).toLocaleTimeString(
+                            "en-US",
+                            {
+                              hour: "numeric",
+                              minute: "numeric",
+                              hour12: true,
+                            }
+                          )}
+                        </p>
+                      </div>
+                      <p className="text-primary/60 font-medium dark:font-normal">
+                        From: {message.fromEmail}
+                      </p>
+                      <p className="text-primary/60 font-medium dark:font-normal">
+                        To: {message.toEmail}
+                      </p>
+                      <div
+                        className="mt-3 text-sm leading-6 tracking-wide text-primary/85 font-medium dark:font-normal"
+                        dangerouslySetInnerHTML={{ __html: message.body }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            )
+          ) : (
+            <div className="flex justify-center items-center min-h-[85dvh] w-full">
+              <div className="flex justify-center items-center flex-col w-full gap-9">
+                <Image
+                  src={"/images/mail.svg"}
+                  className="w-60 md:w-80 h-48 md:h-60 rounded-sm"
+                  alt="logo"
+                  width={500}
+                  height={500}
+                />
+                <h1 className="md:text-2xl text-xl text-center font-semibold">
+                  It&apos;s the beginning of a legendary sales pipeline
+                </h1>
+                <div className="md:text-lg text-base text-center text-primary/50">
+                  <p>Select an email to view</p>
+                </div>
+              </div>
+            </div>
+          )}
+          {selectedEmailIndex !== null && !showReplyDialog && (
+            <Button
+              className="absolute bottom-5 left-5 flex justify-center items-center gap-1 px-5"
+              onClick={() => setShowReplyDialog(true)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="25"
+                height="25"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M10 9V5l-7 7l7 7v-4.1c5 0 8.5 1.6 11 5.1c-1-5-4-10-11-11"
+                />
+              </svg>
+              <p className="text-base">Reply</p>
+            </Button>
+          )}
+        </div>
+
+        <div className="xl:col-span-1 lg:col-span-2 md:col-span-2 dark:bg-background bg-card pt-20 border-l w-full h-full px-3 md:grid hidden">
+          <div>
+            <h2 className="text-xl dark:text-primary text-primary/70 py-2 px-3 rounded-md mt-2 bg-secondary h-fit font-semibold">
+              Lead Details
+            </h2>
+            <div className="px-3 py-4 pb-7 flex flex-col gap-3">
+              <div className="flex flex-wrap gap-3 justify-between">
+                <p>Name</p>
+                <p className="text-primary/60">{name}</p>
+              </div>
+              <div className="flex flex-wrap gap-3 justify-between">
+                <p>Contact No</p>
+                <p className="text-primary/60">+54-9062827869</p>
+              </div>
+              <div className="flex flex-wrap gap-3 justify-between">
+                <p>Email ID</p>
+                <p className="text-primary/60">{email}</p>
+              </div>
+              <div className="flex flex-wrap gap-3 justify-between">
+                <p>Linkedin</p>
+                <p className="text-primary/60">linkedin.com/kumarsrajan</p>
+              </div>
+              <div className="flex flex-wrap gap-3 justify-between">
+                <p>Company Name</p>
+                <p className="text-primary/60">Reachinbox</p>
+              </div>
+            </div>
+            <h2 className="text-xl dark:text-primary text-primary/70 py-2 px-3 rounded-md mt-2 bg-secondary h-fit font-semibold">
+              Activities
+            </h2>
+            <div className="px-3 py-4 flex flex-col gap-3">
+              <h1 className="text-lg font-semibold">Campaign Name</h1>
+              <div className="flex flex-wrap gap-3">
+                <p>3 Steps</p>
+                <p className="font-semibold text-primary/40">|</p>
+                <p>5 Days in Sequence</p>
+              </div>
+              <div className="py-4">
+                <div className="flex relative pb-6">
+                  <div className="h-full w-10 absolute inset-0 flex items-center justify-center">
+                    <div className="h-full w-0.5 bg-border pointer-events-none"></div>
+                  </div>
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full dark:bg-card bg-secondary text-primary/60 dark:text-primary border inline-flex items-center justify-center relative z-10">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  <div className="flex-grow pl-4">
+                    <h2 className="font-medium title-font mb-2 tracking-wider">
+                      Step 1: Email
+                    </h2>
+                    <p className="leading-relaxed flex items-center gap-2 text-primary/60">
+                      <Send className="w-5 h-5" /> <p>Sent 3rd, Feb</p>
+                    </p>
+                  </div>
+                </div>
+                <div className="flex relative pb-6">
+                  <div className="h-full w-10 absolute inset-0 flex items-center justify-center">
+                    <div className="h-full w-0.5 bg-border pointer-events-none"></div>
+                  </div>
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full dark:bg-card bg-secondary text-primary/60 dark:text-primary border inline-flex items-center justify-center relative z-10">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  <div className="flex-grow pl-4">
+                    <h2 className="font-medium title-font mb-2 tracking-wider">
+                      Step 2: Email
+                    </h2>
+                    <p className="leading-relaxed flex items-center gap-2 text-primary/60">
+                      <MailOpenIcon className="w-5 h-5 text-yellow-500" />{" "}
+                      <p>Opened 5th, Feb</p>
+                    </p>
+                  </div>
+                </div>
+                <div className="flex relative">
+                  <div className="h-full w-10 absolute inset-0 flex items-center justify-center">
+                    <div className="h-full w-0.5 bg-border pointer-events-none"></div>
+                  </div>
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full dark:bg-card bg-secondary text-primary/60 dark:text-primary border inline-flex items-center justify-center relative z-10">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  <div className="flex-grow pl-4">
+                    <h2 className="font-medium title-font mb-2 tracking-wider">
+                      Step 3: Email
+                    </h2>
+                    <p className="leading-relaxed flex items-center gap-2 text-primary/60">
+                      <MailOpenIcon className="w-5 h-5 text-yellow-500" />{" "}
+                      <p>Opened 5th, Feb</p>
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        )}
-        {selectedEmailIndex !== null && !showReplyDialog && (
-          <Button
-            className="absolute bottom-5 left-5 flex justify-center items-center gap-1 px-5"
-            onClick={() => setShowReplyDialog(true)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M10 9V5l-7 7l7 7v-4.1c5 0 8.5 1.6 11 5.1c-1-5-4-10-11-11"
-              />
-            </svg>
-            <p className="text-base">Reply</p>
-          </Button>
-        )}
+        </div>
       </div>
 
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
