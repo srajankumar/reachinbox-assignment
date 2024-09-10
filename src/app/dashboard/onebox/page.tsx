@@ -11,7 +11,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 import Image from "next/image";
 import {
@@ -111,7 +110,7 @@ const EmailList = () => {
     if (token) {
       try {
         const decoded: DecodedToken = jwtDecode(token);
-        const { firstName, lastName, email } = decoded.user;
+        const { firstName, email } = decoded.user;
         setName(firstName);
         setEmail(email);
       } catch (error) {
