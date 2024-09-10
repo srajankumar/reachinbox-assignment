@@ -349,7 +349,7 @@ const EmailList = () => {
         </div>
 
         <div className="xl:col-span-2 lg:col-span-3 md:col-span-2 relative dark:bg-background bg-secondary h-full top-0 right-0 sm:grid hidden">
-          <div className="border-b pt-[5.5rem] px-5 pb-4 mb-5 bg-card dark:bg-background flex items-center justify-between">
+          <div className="border-b h-fit pt-[5.5rem] px-5 pb-4 mb-5 bg-card dark:bg-background flex items-center justify-between">
             <div>
               <h1 className="text-lg font-semibold">{name}</h1>
               <p>{email}</p>
@@ -440,7 +440,7 @@ const EmailList = () => {
             </div>
           </div>
 
-          <div className="px-5">
+          <div className="px-5 min-h-[77dvh]">
             {selectedThreadId ? (
               loadingMessages ? (
                 <div className="p-4 border flex flex-col gap-3 rounded-md bg-card h-fit">
