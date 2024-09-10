@@ -25,7 +25,6 @@ interface Email {
 
 const EmailList = () => {
   const [emails, setEmails] = useState<Email[]>([]);
-  const [error, setError] = useState<string | null>(null);
 
   // Fetch emails from the API
   useEffect(() => {
@@ -59,7 +58,6 @@ const EmailList = () => {
   return (
     <div className="p-5">
       <h2 className="text-2xl mb-4">Email List</h2>
-      {error && <p className="text-red-500">{error}</p>}
       {emails.length === 0 ? (
         <p>Loading emails...</p>
       ) : (

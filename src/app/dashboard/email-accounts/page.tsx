@@ -64,7 +64,7 @@ const EmailAccounts = () => {
   useEffect(() => {
     if (email) {
       const combinedEmails = dummyEmails.map((account) => ({
-        name: email, // Use email from JWT token
+        name: email,
         ...account,
       }));
       setFilteredEmails(combinedEmails);
@@ -97,74 +97,72 @@ const EmailAccounts = () => {
 
   return (
     <div className="pt-2">
-      <div>
-        <div className="flex w-full items-center pb-10">
-          <Input
-            placeholder="Search"
-            className="max-w-sm"
-            value={searchQuery}
-            onChange={(e: any) => setSearchQuery(e.target.value)}
-            onKeyDown={(e: any) => {
-              if (e.key === "Enter") {
-                handleSearch();
-              }
-            }}
-          />
-          <Button className="ml-4" onClick={handleSearch}>
-            Search
-          </Button>
-        </div>
-
-        <div className="rounded-md border w-full">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Emails Sent</TableHead>
-                <TableHead>Warmup Emails</TableHead>
-                <TableHead>Health Score</TableHead>
+      <div className="flex w-full items-center pb-10">
+        <Input
+          placeholder="Search"
+          className="max-w-sm"
+          value={searchQuery}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setSearchQuery(e.target.value)
+          }
+          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
+        />
+        <Button className="ml-4" onClick={handleSearch}>
+          Search
+        </Button>
+      </div>
+      <div className="rounded-md border w-full">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Emails Sent</TableHead>
+              <TableHead>Warmup Emails</TableHead>
+              <TableHead>Health Score</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {currentItems.map((track, index) => (
+              <TableRow key={index}>
+                <TableCell>{track.name}</TableCell>
+                <TableCell>{track.emails_sent}</TableCell>
+                <TableCell>{track.warmup_emails}</TableCell>
+                <TableCell>{track.health_score}</TableCell>
+                <TableCell className="flex justify-center items-center gap-2">
+                  <Flame className="w-5 h-5 text-[#00e09d]" />
+                  <Ellipsis className="w-5 h-5" />
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {currentItems.map((track, index) => (
-                <TableRow key={index}>
-                  <TableCell>{track.name}</TableCell>
-                  <TableCell>{track.emails_sent}</TableCell>
-                  <TableCell>{track.warmup_emails}</TableCell>
-                  <TableCell>{track.health_score}</TableCell>
-                  <TableCell className="flex justify-center items-center gap-2">
-                    <Flame className="w-5 h-5 text-[#00e09d]" />
-                    <Ellipsis className="w-5 h-5" />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+      <div className="flex items-center justify-between w-full space-x-2 py-4">
+        <div className="flex-1 text-sm text-muted-foreground">
+          Showing {startIndex + 1} - {Math.min(endIndex, totalCount)} of{" "}
+          {totalCount} Accounts
         </div>
-
-        <div className="flex items-center justify-between w-full space-x-2 py-4">
-          <div className="flex-1 text-sm text-muted-foreground">
-            Showing {startIndex + 1} - {Math.min(endIndex, totalCount)} of{" "}
-            {totalCount} Accounts
-          </div>
-          <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handlePrevPage}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleNextPage}
-              disabled={endIndex >= totalCount}
-            >
-              Next
-            </Button>
-          </div>
+        <div className="space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleNextPage}
+            disabled={endIndex >= totalCount}
+          >
+            Next
+          </Button>
         </div>
       </div>
     </div>
