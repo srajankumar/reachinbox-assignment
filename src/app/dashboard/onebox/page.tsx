@@ -6,6 +6,13 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Image from "next/image";
 import {
   AlertDialog,
@@ -28,14 +35,20 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Baseline,
+  Clock,
   Code,
+  Edit,
+  Ellipsis,
   ImageIcon,
   Link2,
   Mail,
+  MailOpen,
   MailOpenIcon,
   Send,
   Smile,
+  Trash,
   User,
+  UserRoundMinus,
 } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 
@@ -336,103 +349,196 @@ const EmailList = () => {
           )}
         </div>
 
-        <div className="xl:col-span-2 lg:col-span-3 md:col-span-2 relative dark:bg-background bg-secondary h-full pt-24 px-5 top-0 right-0 sm:grid hidden">
-          {selectedThreadId ? (
-            loadingMessages ? (
-              <div className="p-4 border flex flex-col gap-3 rounded-md bg-card h-fit">
-                <Skeleton className="w-[100px] h-5 rounded-full mb-2" />
-                <Skeleton className="w-[120px] h-5 rounded-full" />
-                <Skeleton className="w-[140px] h-5 rounded-full" />
-                <div className="mt-3 flex flex-col gap-2">
-                  <Skeleton className="w-[100px] h-5 rounded-full" />
-                  <Skeleton className="w-[150px] h-5 rounded-full" />
-                </div>
-              </div>
-            ) : (
-              <ScrollArea className="h-full">
-                <div className="space-y-5 pb-20">
-                  {messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className="p-4 mb-5 border flex flex-col gap-2 rounded-md bg-card"
-                    >
-                      <div className="flex justify-between gap-5 flex-wrap">
-                        <h1 className="font-semibold text-lg">
-                          {message.subject}
-                        </h1>
-                        <p className="text-sm tracking-wide text-primary/60 font-medium dark:font-normal">
-                          {new Date(message.sentAt).toLocaleDateString(
-                            "en-US",
-                            {
-                              day: "numeric",
-                              month: "long",
-                              year: "numeric",
-                            }
-                          )}{" "}
-                          :{" "}
-                          {new Date(message.sentAt).toLocaleTimeString(
-                            "en-US",
-                            {
-                              hour: "numeric",
-                              minute: "numeric",
-                              hour12: true,
-                            }
-                          )}
-                        </p>
+        <div className="xl:col-span-2 lg:col-span-3 md:col-span-2 relative dark:bg-background bg-secondary h-full top-0 right-0 sm:grid hidden">
+          <div className="border-b pt-[5.5rem] px-5 pb-4 mb-5 bg-card dark:bg-background flex items-center justify-between">
+            <div>
+              <h1 className="text-lg font-semibold">{name}</h1>
+              <p>{email}</p>
+            </div>
+            <div className="flex justify-center items-center gap-3">
+              <div className="xl:flex hidden">
+                <Select>
+                  <SelectTrigger>
+                    <div className="flex gap-1 mr-1">
+                      <div className="w-6 h-6 bg-yellow-100/20 mr-1 rounded-full flex justify-center items-center">
+                        <div className="w-4 h-4 bg-yellow-300 rounded-full"></div>
                       </div>
-                      <p className="text-primary/60 font-medium dark:font-normal">
-                        From: {message.fromEmail}
-                      </p>
-                      <p className="text-primary/60 font-medium dark:font-normal">
-                        To: {message.toEmail}
-                      </p>
-                      <div
-                        className="mt-3 text-sm leading-6 tracking-wide text-primary/85 font-medium dark:font-normal"
-                        dangerouslySetInnerHTML={{ __html: message.body }}
-                      />
+                      <div>Meeting Completed</div>
                     </div>
-                  ))}
-                </div>
-              </ScrollArea>
-            )
-          ) : (
-            <div className="flex justify-center items-center min-h-[85dvh] w-full">
-              <div className="flex justify-center items-center flex-col w-full gap-9">
-                <Image
-                  src={"/images/mail.svg"}
-                  className="w-60 md:w-80 h-48 md:h-60 rounded-sm"
-                  alt="logo"
-                  width={500}
-                  height={500}
-                />
-                <h1 className="md:text-2xl text-xl text-center font-semibold">
-                  It&apos;s the beginning of a legendary sales pipeline
-                </h1>
-                <div className="md:text-lg text-base text-center text-primary/50">
-                  <p>Select an email to view</p>
-                </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="mail">
+                      <div className="flex gap-2">
+                        <MailOpen className="w-5 h-5" />{" "}
+                        <div>Mark as unread</div>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="lead">
+                      <div className="flex gap-2">
+                        <Edit className="w-5 h-5" /> <div>Edit lead</div>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="remove-lead">
+                      <div className="flex gap-2">
+                        <UserRoundMinus className="w-5 h-5" />{" "}
+                        <div>Remove lead</div>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="timer">
+                      <div className="flex gap-2">
+                        <Clock className="w-5 h-5" /> <div>Set reminder</div>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="timer">
+                      <div className="flex gap-2">
+                        <Trash className="w-5 h-5" /> <div>Delete</div>
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="lg:flex hidden">
+                <Select>
+                  <SelectTrigger>
+                    <div>More</div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="mail">
+                      <div className="flex gap-2">
+                        <MailOpen className="w-5 h-5" />{" "}
+                        <div>Mark as unread</div>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="lead">
+                      <div className="flex gap-2">
+                        <Edit className="w-5 h-5" /> <div>Edit lead</div>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="remove-lead">
+                      <div className="flex gap-2">
+                        <UserRoundMinus className="w-5 h-5" />{" "}
+                        <div>Remove lead</div>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="timer">
+                      <div className="flex gap-2">
+                        <Clock className="w-5 h-5" /> <div>Set reminder</div>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="timer">
+                      <div className="flex gap-2">
+                        <Trash className="w-5 h-5" /> <div>Delete</div>
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="lg:flex hidden">
+                <Button size={"icon"} variant={"outline"}>
+                  <Ellipsis className="w-5 h-5" />
+                </Button>
               </div>
             </div>
-          )}
-          {selectedEmailIndex !== null && !showReplyDialog && (
-            <Button
-              className="absolute bottom-5 left-5 flex justify-center items-center gap-1 px-5"
-              onClick={() => setShowReplyDialog(true)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="25"
-                height="25"
-                viewBox="0 0 24 24"
+          </div>
+
+          <div className="px-5">
+            {selectedThreadId ? (
+              loadingMessages ? (
+                <div className="p-4 border flex flex-col gap-3 rounded-md bg-card h-fit">
+                  <Skeleton className="w-[100px] h-5 rounded-full mb-2" />
+                  <Skeleton className="w-[120px] h-5 rounded-full" />
+                  <Skeleton className="w-[140px] h-5 rounded-full" />
+                  <div className="mt-3 flex flex-col gap-2">
+                    <Skeleton className="w-[100px] h-5 rounded-full" />
+                    <Skeleton className="w-[150px] h-5 rounded-full" />
+                  </div>
+                </div>
+              ) : (
+                <ScrollArea className="h-full">
+                  <div className="space-y-5 pb-20">
+                    {messages.map((message) => (
+                      <div
+                        key={message.id}
+                        className="p-4 mb-5 border flex flex-col gap-2 rounded-md bg-card"
+                      >
+                        <div className="flex justify-between gap-5 flex-wrap">
+                          <h1 className="font-semibold text-lg">
+                            {message.subject}
+                          </h1>
+                          <p className="text-sm tracking-wide text-primary/60 font-medium dark:font-normal">
+                            {new Date(message.sentAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric",
+                              }
+                            )}{" "}
+                            :{" "}
+                            {new Date(message.sentAt).toLocaleTimeString(
+                              "en-US",
+                              {
+                                hour: "numeric",
+                                minute: "numeric",
+                                hour12: true,
+                              }
+                            )}
+                          </p>
+                        </div>
+                        <p className="text-primary/60 font-medium dark:font-normal">
+                          From: {message.fromEmail}
+                        </p>
+                        <p className="text-primary/60 font-medium dark:font-normal">
+                          To: {message.toEmail}
+                        </p>
+                        <div
+                          className="mt-3 text-sm leading-6 tracking-wide text-primary/85 font-medium dark:font-normal"
+                          dangerouslySetInnerHTML={{ __html: message.body }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
+              )
+            ) : (
+              <div className="flex justify-center items-center min-h-[85dvh] w-full">
+                <div className="flex justify-center items-center flex-col w-full gap-9">
+                  <Image
+                    src={"/images/mail.svg"}
+                    className="w-60 md:w-80 h-48 md:h-60 rounded-sm"
+                    alt="logo"
+                    width={500}
+                    height={500}
+                  />
+                  <h1 className="md:text-2xl text-xl text-center font-semibold">
+                    It&apos;s the beginning of a legendary sales pipeline
+                  </h1>
+                  <div className="md:text-lg text-base text-center text-primary/50">
+                    <p>Select an email to view</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {selectedEmailIndex !== null && !showReplyDialog && (
+              <Button
+                className="absolute bottom-5 left-5 flex justify-center items-center gap-1 px-5"
+                onClick={() => setShowReplyDialog(true)}
               >
-                <path
-                  fill="currentColor"
-                  d="M10 9V5l-7 7l7 7v-4.1c5 0 8.5 1.6 11 5.1c-1-5-4-10-11-11"
-                />
-              </svg>
-              <p className="text-base">Reply</p>
-            </Button>
-          )}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="25"
+                  height="25"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M10 9V5l-7 7l7 7v-4.1c5 0 8.5 1.6 11 5.1c-1-5-4-10-11-11"
+                  />
+                </svg>
+                <p className="text-base">Reply</p>
+              </Button>
+            )}
+          </div>
         </div>
 
         <div className="xl:col-span-1 lg:col-span-2 md:col-span-2 dark:bg-background bg-card pt-20 border-l w-full h-full px-3 md:grid hidden">
@@ -484,9 +590,9 @@ const EmailList = () => {
                     <h2 className="font-medium title-font mb-2 tracking-wider">
                       Step 1: Email
                     </h2>
-                    <p className="leading-relaxed flex items-center gap-2 text-primary/60">
+                    <div className="leading-relaxed flex items-center gap-2 text-primary/60">
                       <Send className="w-5 h-5" /> <p>Sent 3rd, Feb</p>
-                    </p>
+                    </div>
                   </div>
                 </div>
                 <div className="flex relative pb-6">
@@ -500,10 +606,10 @@ const EmailList = () => {
                     <h2 className="font-medium title-font mb-2 tracking-wider">
                       Step 2: Email
                     </h2>
-                    <p className="leading-relaxed flex items-center gap-2 text-primary/60">
+                    <div className="leading-relaxed flex items-center gap-2 text-primary/60">
                       <MailOpenIcon className="w-5 h-5 text-yellow-500" />{" "}
                       <p>Opened 5th, Feb</p>
-                    </p>
+                    </div>
                   </div>
                 </div>
                 <div className="flex relative">
@@ -517,10 +623,10 @@ const EmailList = () => {
                     <h2 className="font-medium title-font mb-2 tracking-wider">
                       Step 3: Email
                     </h2>
-                    <p className="leading-relaxed flex items-center gap-2 text-primary/60">
+                    <div className="leading-relaxed flex items-center gap-2 text-primary/60">
                       <MailOpenIcon className="w-5 h-5 text-yellow-500" />{" "}
                       <p>Opened 5th, Feb</p>
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>

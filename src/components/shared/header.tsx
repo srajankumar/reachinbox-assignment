@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Plus } from "lucide-react";
+import Logout from "./logout";
 
 interface DecodedToken {
   user: {
@@ -74,6 +75,9 @@ const Header = () => {
               </div>
               <div className="sm:hidden flex">Workspace</div>
             </DropdownMenuItem>
+            <div className="p-3">
+              <Logout />
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
