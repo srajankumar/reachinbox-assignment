@@ -106,9 +106,9 @@ const Sidebar = () => {
               </svg>
             </Link>
             <Link
-              href={"/dashboard/mail"}
+              href={"/dashboard/email-accounts"}
               className={`${
-                pathname == "/dashboard/mail"
+                pathname == "/dashboard/email-accounts"
                   ? "dark:bg-secondary bg-primary/10 dark:text-primary"
                   : "dark:text-primary/80 text-primary/60"
               } w-fit p-2 mx-auto rounded-sm`}
@@ -126,9 +126,9 @@ const Sidebar = () => {
               </svg>
             </Link>
             <Link
-              href={"/dashboard/send"}
+              href={"/dashboard/campaigns"}
               className={`${
-                pathname == "/dashboard/send"
+                pathname == "/dashboard/campaigns"
                   ? "dark:bg-secondary bg-primary/10 dark:text-primary"
                   : "dark:text-primary/80 text-primary/60"
               } w-fit p-2 mx-auto rounded-sm`}
@@ -177,9 +177,9 @@ const Sidebar = () => {
               </svg>
             </Link>
             <Link
-              href={"/dashboard/inbox"}
+              href={"/dashboard/onebox"}
               className={`${
-                pathname == "/dashboard/inbox"
+                pathname == "/dashboard/onebox"
                   ? "dark:bg-secondary bg-primary/10 dark:text-primary"
                   : "dark:text-primary/80 text-primary/60"
               } w-fit p-2 mx-auto rounded-sm`}
@@ -220,7 +220,7 @@ const Sidebar = () => {
           <div className="mx-auto py-5">
             <Avatar>
               <AvatarImage src="" />
-              <AvatarFallback className="bg-green-900">
+              <AvatarFallback className="bg-green-900 text-white">
                 {initials ? initials : "NA"}
               </AvatarFallback>
             </Avatar>

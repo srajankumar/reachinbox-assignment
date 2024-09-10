@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 
-const Inbox = () => {
+const Campaigns = () => {
   return <div></div>;
 };
 
-export default Inbox;
+export default Campaigns;

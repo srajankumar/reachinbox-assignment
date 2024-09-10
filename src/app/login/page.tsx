@@ -21,7 +21,7 @@ const Login = () => {
         </CardHeader>
         <CardContent>
           <Link
-            href={`https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=${process.env.NEXT_PUBLIC_CLIENT_URL}/dashboard/home`}
+            href={`https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=${process.env.NEXT_PUBLIC_CLIENT_URL}/redirect`}
           >
             <Button
               className="md:w-96 dark:bg-secondary/50 dark:hover:bg-secondary/40 sm:w-80 w-full flex gap-2"

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import { usePathname } from "next/navigation";
 import React from "react";
 import { ModeToggle } from "../mode-toggle";
 import {
@@ -11,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Plus } from "lucide-react";
 
 interface DecodedToken {
   user: {
@@ -27,6 +28,8 @@ interface DecodedToken {
 const Header = () => {
   const [fullName, setFullName] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
+  const pathname = usePathname();
+  const dynamicSegment = pathname.split("/")[2];
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
@@ -45,8 +48,8 @@ const Header = () => {
 
   return (
     <div className="w-full flex fixed z-40 pl-20 bg-background justify-between items-center pr-4 py-4 border-b">
-      <p className="text-xl font-semibold">Onebox</p>
-      <div className="flex gap-5">
+      <p className="text-xl font-semibold capitalize">{dynamicSegment}</p>
+      <div className="flex gap-3">
         <ModeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger className="flex justify-center items-center gap-2">
@@ -58,12 +61,17 @@ const Header = () => {
             <ChevronDown className="w-5 h-5" />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel className="text-blue-500 flex gap-2 items-center">
+              <Plus className="w-5 h-5" /> Create Workspace
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Team</DropdownMenuItem>
-            <DropdownMenuItem>Subscription</DropdownMenuItem>
+            <DropdownMenuItem>
+              <div className="md:flex hidden">{fullName}&apos;s Workspace</div>
+              <div className="md:hidden sm:flex hidden">
+                {firstName}&apos;s Workspace
+              </div>
+              <div className="sm:hidden flex">Workspace</div>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
