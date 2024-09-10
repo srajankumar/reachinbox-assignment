@@ -40,7 +40,7 @@ const EmailList = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loadingMessages, setLoadingMessages] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [filteredEmails, setFilteredEmails] = useState<Email[]>([]);
+  const [, setFilteredEmails] = useState<Email[]>([]);
 
   useEffect(() => {
     const fetchEmails = async () => {
