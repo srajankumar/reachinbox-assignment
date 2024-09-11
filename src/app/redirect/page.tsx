@@ -15,6 +15,11 @@ const Redirect = () => {
       console.log("Token saved to localStorage:", token);
       router.push("/dashboard/onebox");
     }
+
+    if (!token) {
+      console.log("Token not found");
+      router.push("/login");
+    }
   }, [searchParams]);
 
   return (
