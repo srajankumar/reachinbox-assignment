@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ReachInbox Assignment
 
-## Getting Started
+Welcome to my ReachInbox assignment! This project is a functional web app built based on the provided designs and APIs. Below you will find detailed information about the project, how to run it locally, the technologies used, and some mockups for better understanding.
 
-First, run the development server:
+In this project, I used [Next.js](https://github.com/vercel/next.js) for the frontend, [Postman](https://github.com/postmanlabs) for API testing, and [Shadcn UI](https://github.com/shadcn-ui/ui) for the user interface components, and deployed the application using [Vercel](https://github.com/vercel/vercel).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features Implemented
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Login Page**  
+  Implements the design and handles authentication.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Onebox Screen**  
+  Fetches and displays data using API integration.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Keyboard Shortcuts**
 
-## Learn More
+  - Press `D` to delete a thread.
+  - Press `R` to open the reply box.
 
-To learn more about Next.js, take a look at the following resources:
+- **Light and Dark Mode**  
+  Toggle between themes to enhance user experience.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Live Demo
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+You can check out the live version of the web app here:  
+[Deployment Preview](https://reachinbox.srajan.tech)
 
-## Deploy on Vercel
+## Source Code
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The source code for the project is available in this GitHub repository:  
+[Source Code - GitHub](https://github.com/srajankumar/reachinbox-assignment)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Mockups
+
+<div align="center">
+  <img src="./public/assets/mockup/mockup-1.png" alt="mockup-1"/>
+</div>
+<div align="center">
+  <img src="./public/assets/mockup/mockup-2.png" alt="mockup-2"/>
+</div>
+<div align="center">
+  <img src="./public/assets/mockup/mockup-3.png" alt="mockup-3"/>
+</div>
+
+For more screenshots, view [Google Drive](https://drive.google.com/drive/folders/1BMnmxIJVxdHrQrLwtIe0kjbyrXdjq6Y7)
+
+## Technologies Used
+
+![Next.js](https://img.shields.io/badge/Next.js-%23000000.svg?style=for-the-badge&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Shadcn UI](https://img.shields.io/badge/Shadcn_UI-%23000000.svg?style=for-the-badge)
+![Figma](https://img.shields.io/badge/Figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+
+## Installation
+
+To run this project locally, follow these steps:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/srajankumar/reachinbox-assignment.git
+   ```
+
+2. Navigate to the project directory:
+
+   ```bash
+   cd reachinbox-assignment
+   ```
+
+3. Install the dependencies:
+
+   ```bash
+   npm install
+   ```
+
+4. Create a `.env.local` file in the root of the project and add the following environment variable:
+
+   ```bash
+   NEXT_PUBLIC_CLIENT_URL=your_frontend_url
+   ```
+
+5. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+6. Open your browser and visit `http://localhost:3000` to view the app.
+
+## Contact
+
+Feel free to reach out if you have any questions or feedback on my project - [srajan.tech](https://srajan.tech)
+
+> _Thank you for taking the time to review my assignment. I look forward to hearing back from you soon :)_
